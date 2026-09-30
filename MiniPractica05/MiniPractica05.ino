@@ -3,8 +3,8 @@
  * José María Martínez Leal
  */
 
-const int pinPWM = 26; // LED 3 - Salida Digital PWM
-const int pinDAC = 25; // LED 4 - Salida Analógica Real (DAC 1)
+const int pinPWM = 26; //Salida Digital PWM
+const int pinDAC = 25; //Salida Analógica DAC
 
 float angulo = 0.0;           
 const float incremento = 0.05;
@@ -30,7 +30,7 @@ void loop() {
   analogWrite(pinPWM, (int)valorPWM); 
   dacWrite(pinDAC, (int)valorDAC);    
 
-  // Imprimimos en el Serial Plotter para evidenciar la distinción
+  // Imprimimos en el Serial Plotter para observar la distinción
   Serial.print("Señal_DAC(Recortada):");
   Serial.print(valorDAC); 
   Serial.print(",");

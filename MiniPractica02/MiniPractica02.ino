@@ -13,7 +13,6 @@ José María Martínez Leal
 const int leds[5] = {led1, led2, led3, led4, led5};
 
 void setup() {
-  // Definimos los pines como salida dentro de un ciclo for
   for (int i = 0; i < 5 ; i++) {
     pinMode(leds[i], OUTPUT);
   }

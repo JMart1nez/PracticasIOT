@@ -3,9 +3,9 @@
  * José María Martínez Leal
  */
 
-// Definición de pines
-const int leds[5] = {14, 27, 26, 25, 33}; // LED 1 al 5
-const int PinLDR = 34;                    // Fotorresistencia (LDR)
+//Definición de pines
+const int leds[5] = {14, 27, 26, 25, 33}; // Leds
+const int PinLDR = 34;                    // LDR
 
 void setup() {
   Serial.begin(115200); 
@@ -17,6 +17,7 @@ void setup() {
   pinMode(PinLDR, INPUT); 
 }
 
+//Para evitar el ruido, la función toma un bloque de lecturas, las suma en "long" y saca un promedio
 int media(int data_number, int pin) {
   long value = 0; 
   for (int i = 0; i < data_number; i++) {
@@ -27,17 +28,20 @@ int media(int data_number, int pin) {
 }
 
 void loop() {
+  //Saca la media de 100 lecturas 
   int nivelLuz = media(100, PinLDR);
   
-  // Imprime el valor real del pin 34
+  //Imprime el valor en el LDR
   Serial.print("Nivel de luz: ");
   Serial.println(nivelLuz);
 
-  // Apaga todos los LEDs por defecto en cada ciclo
+  //Apaga todos los LEDs por defecto en cada ciclo
   for (int i = 0; i < 5; i++) {
     digitalWrite(leds[i], LOW);
   }
   
+  //Si hay ausencia de luz, todos los leds prenden y se apagan conforme aumenta la luz en un rango de 
+  //0 a 4095
   if (nivelLuz < 500) { 
     digitalWrite(leds[0], HIGH);
     digitalWrite(leds[1], HIGH);
