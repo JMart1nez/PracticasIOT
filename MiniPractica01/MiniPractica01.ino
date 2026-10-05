@@ -1,35 +1,20 @@
 /*
 Mini practica 01
-José María Martínez Leal
-*/
+Periodo total (T): 2 milisegundos (0.002 segundos)
+Frecuencia (f): Usando la fórmula del inverso del periodo, tenemos f = 1/0.002 = 500 Hz
 
-/*
-Definimos el led
+Nota: en delay(1) se siguen viendo puntos al mover la placa de un lado a otro, con delay(10)
+ya no se nota el parpadeo con la placa estatica.
 */
 
 const int led = 14;
-
 void setup() {
   pinMode(led, OUTPUT);
-
 }
 
-/*
-Prendemos y apagamos utilizando 10 milisegundos en delay
-*/
 void loop() {
   digitalWrite(led, HIGH);  
-  delay(10);                 
+  delay(1);                 
   digitalWrite(led, LOW);   
-  delay(10);
-             
+  delay(1);                
 }
-
-/*
-Periodo total T = 20 milisegundos = 0.020 segundos
-Frecuencia f = 1/0.020 = 50 Hz
-
-Nota: 
-A los 22 milisegundos (45.45 Hz) se nota que aun parpadea un poco pero en 20 milisegundos desaparece el parpadeo 
-
-*/
