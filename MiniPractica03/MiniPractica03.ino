@@ -12,15 +12,15 @@
 #define led5 33
 
 const int leds[5] = {led1, led2, led3, led4, led5}; // Leds 1 al 5
-const int btnSecuencia = 4;              //Botón SW1
-const int btnReset = 15;                  //Botón SW2
+const int btnSecuencia = 4;              //Botón SW2
+const int btnReset = 15;                  //Botón SW1
 
 int contador = 0;                         //Cuenta las pulsaciones
 int estadoAnteriorBtnSecuencia = LOW;     //Memoria del estado del botón
 
 // Variables para evitar dobles pulsaciones
-unsigned long tiempoAnterior = 0;
-const int umbralTiempo = 50;              //50 milisegundos de umbral
+unsigned long tiempoAnterior = 0;         //Guarda el tiempo en el que el estado cambio correctamente
+const int umbralTiempo = 50;              //si otra accion ocurre en menos de 50ms se ignora
 
 void setup() {
   for (int i = 0; i < 5; i++) {
@@ -28,8 +28,8 @@ void setup() {
     digitalWrite(leds[i], LOW);
   }
 
-  //Configurar botones como entrada con resistencia pulldown interna
-  pinMode(btnSecuencia, INPUT_PULLDOWN);
+  //Configurar botones como entrada con pulldown
+  pinMode(btnSecuencia, INPUT_PULLDOWN); 
   pinMode(btnReset, INPUT_PULLDOWN);
 }
 
@@ -41,22 +41,24 @@ void apagarTodos() {
 }
 
 void loop() {
+  //Se guarda el estado actual de los botones
   int estadoActualBtnSecuencia = digitalRead(btnSecuencia);
   int estadoBtnReset = digitalRead(btnReset);
 
-  //Botón SW2
-  //Al presionar el otro botón, todos los LEDs se apagarán y el ciclo se reinicia
+  //Botón SW1
+  //Al presionar SW1, todos los LEDs se apagarán y el ciclo se reinicia
   if (estadoBtnReset == HIGH) {
     apagarTodos();
     contador = 0;
   }
 
-  //Botón SW1
-  //Solo responde al momento en que el botón se presiona
-  //Ignoramos si se mantiene presionado evaluando que el estado anterior sea LOW.
+  //Botón SW2
+  //Accion al presionar SW2
+  //Si el boton esta presionado y antes estaba suelto
   if (estadoActualBtnSecuencia == HIGH && estadoAnteriorBtnSecuencia == LOW) {
     
-    if (millis() > tiempoAnterior + umbralTiempo) {
+    //Verificamos que hayan pasado mas de 50ms desde el ultimo estado registrado
+    if (millis() - tiempoAnterior > umbralTiempo) {
       
       contador++; //Aumenta el registro de la pulsación
       
@@ -72,7 +74,12 @@ void loop() {
       tiempoAnterior = millis(); //Actualizamos el reloj
     }
   }
+  //En otro caso, si el boton esta suelto y hace un momento estaba presionado
+  else if (estadoActualBtnSecuencia == LOW && estadoAnteriorBtnSecuencia == HIGH){
 
-  //Actualizamos la memoria del botón para el siguiente ciclo
+    tiempoAnterior = millis(); //Atualizamos el reloj para evitar otra pulsacion
+  }
+
+  //Actualizamos la memoria del botón
   estadoAnteriorBtnSecuencia = estadoActualBtnSecuencia;
 }
