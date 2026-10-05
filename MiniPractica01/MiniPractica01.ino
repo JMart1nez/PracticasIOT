@@ -1,5 +1,7 @@
 /*
 Mini practica 01
+José María Martínez Leal
+
 Periodo total (T): 2 milisegundos (0.002 segundos)
 Frecuencia (f): Usando la fórmula del inverso del periodo, tenemos f = 1/0.002 = 500 Hz
 
